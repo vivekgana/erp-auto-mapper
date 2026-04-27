@@ -1,0 +1,61 @@
+bundle:
+  name: erp-auto-mapper
+
+workspace:
+  host: ${var.databricks_host}
+
+variables:
+  databricks_host:
+    description: Databricks workspace URL
+  cluster_id:
+    description: Existing cluster ID for notebook jobs (optional)
+
+targets:
+  dev:
+    default: true
+    variables:
+      catalog: erp_auto_mapper_dev
+      schema: mapper
+
+  staging:
+    variables:
+      catalog: erp_auto_mapper_staging
+      schema: mapper
+
+  prod:
+    variables:
+      catalog: erp_auto_mapper_prod
+      schema: mapper
+
+resources:
+  apps:
+    erp-auto-mapper-app:
+      name: erp-auto-mapper-app
+      description: ERP Auto Mapper REST API
+      source_code_path: .
+
+  jobs:
+    erp-auto-mapper-batch-map:
+      name: erp-auto-mapper-batch-map
+      description: Batch ERP field mapping job
+      schedule:
+        quartz_cron_expression: "0 0 2 * * ?"
+        timezone_id: UTC
+      tasks:
+        - task_key: batch_map
+          notebook_task:
+            notebook_path: notebooks/05_batch_job
+          existing_cluster_id: ${var.cluster_id}
+
+    erp-auto-mapper-setup:
+      name: erp-auto-mapper-setup
+      description: One-time setup — create tables and register UDFs
+      tasks:
+        - task_key: create_tables
+          spark_python_task:
+            python_file: deploy/sql/run_ddl.py
+        - task_key: register_udfs
+          depends_on:
+            - task_key: create_tables
+          spark_python_task:
+            python_file: deploy/udfs/register_udfs.py

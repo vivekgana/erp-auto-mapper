@@ -1,0 +1,58 @@
+{
+  "name": "erp-auto-mapper",
+  "display_name": "ERP Auto Mapper — AI ERP-to-CDM Field Mapping",
+  "version": "0.1.0",
+  "provider": {
+    "name": "ERP Auto Mapper",
+    "email": "marketplace@erp-auto-mapper.io"
+  },
+  "description": "AI-powered 3-pass ensemble engine that automatically maps any ERP schema (SAP, Oracle, Dynamics, NetSuite, etc.) to a 10-entity Canonical Data Model with 6-dimension quality scoring, human feedback loop, and regression detection.",
+  "category": "Data Engineering",
+  "tags": ["erp", "cdm", "mapping", "audit", "sap", "oracle", "financial"],
+  "license": "Apache-2.0",
+  "min_runtime_version": "14.0",
+  "python_version": ">=3.11",
+  "icon_url": "",
+  "screenshots": [],
+  "documentation_url": "https://github.com/erp-auto-mapper/erp-auto-mapper#readme",
+  "support_url": "https://github.com/erp-auto-mapper/erp-auto-mapper/issues",
+  "terms_of_service_url": "",
+  "pricing": {
+    "model": "free",
+    "limits": {
+      "fields_per_request": 50,
+      "requests_per_day": 100
+    }
+  },
+  "assets": {
+    "notebooks": [
+      "notebooks/00_quickstart.py",
+      "notebooks/01_sap_to_cdm.py",
+      "notebooks/02_oracle_to_cdm.py",
+      "notebooks/03_validate_quality.py",
+      "notebooks/04_feedback_loop.py",
+      "notebooks/05_batch_job.py"
+    ],
+    "tables": [
+      "erp_mapping_runs",
+      "erp_mapping_results",
+      "erp_eval_reports"
+    ],
+    "udfs": [
+      "map_fields",
+      "validate_quality"
+    ]
+  },
+  "endpoints": {
+    "rest_api": {
+      "routes": [
+        "POST /v1/map",
+        "POST /v1/validate",
+        "POST /v1/extract",
+        "POST /v1/cdm/register",
+        "GET /v1/cdm/entities",
+        "GET /health"
+      ]
+    }
+  }
+}

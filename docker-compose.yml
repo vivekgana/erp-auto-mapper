@@ -1,0 +1,8 @@
+services:
+  mapper:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      MAPPER_AUTH_DISABLED: "true"
+      MAPPER_LLM_ENDPOINT: ""

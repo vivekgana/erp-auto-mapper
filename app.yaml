@@ -1,0 +1,14 @@
+command:
+  - uvicorn
+  - erp_auto_mapper.api.app:create_app
+  - --factory
+  - --host
+  - 0.0.0.0
+  - --port
+  - "8000"
+
+env:
+  - name: MAPPER_AUTH_DISABLED
+    value: "false"
+  - name: MAPPER_AUTH_JWKS_URL
+    value: ""
